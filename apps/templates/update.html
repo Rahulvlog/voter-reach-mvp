@@ -1,0 +1,113 @@
+{% extends "layouts/base.html" %} 
+
+{% block title %} Voter {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container mt-2" style="width:30%">
+    <h3 class="text-center">Select list</h3>
+    <label for="state">State</label>
+    <select class="form-select" aria-label="Default select example" id="state" onchange="statefield()">
+        <option selected>Choose State</option>
+        {% for i in state %}
+            <option value="{{i.id}}" {% if request.GET.state == i.id|lower %}selected{% endif %}>{{i.name}}</option>
+        {% endfor %}
+    </select>
+    <br/>
+    <label for="district">District</label>
+    <select class="form-select" aria-label="Default select example" id="district" onchange="districtfield()">
+        <option selected>Choose District</option>
+        {% for i in district %}
+            <option value="{{i.id}}" {% if request.GET.district == i.id|lower %}selected{% endif %}>{{i.name}}</option>
+        {% endfor %}
+    </select>
+<br/>
+    <label for="city">City</label>
+    <select class="form-select" aria-label="Default select example" id="city">
+        <option selected>Choose City</option>
+        {% for i in city %}
+            <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+    </select>
+    <br/>
+</div>
+<script>
+    function statefield(){
+        stateid = document.getElementById('state').value;
+        window.location = "/?state="+stateid;
+    }
+    function districtfield(){
+       stateid = document.getElementById('district').value;
+       window.location = "/?state="+'{{request.GET.state}}'+"&district="+districtid;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+
+   {% if messages %}
+        {% for message in messages %}
+            <div>
+<!--                | means OR operator-->
+                <strong>{{message|safe}}</strong>
+            </div>
+        {% endfor %}
+    {% else %}
+    {{order}} 
+    <div class="container mt-5" style="width:40%">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file1"> </label>
+            <input type="file" id="file1" name="file">
+            <small></small>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    
+    <div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>address</th>
+                    <th>phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for profile in profiles %}
+                    <td>{{profile.name}}</td>
+                    <td>{{profile.email}}</td>
+                    <td>{{profile.address}}</td>
+                    <td>{{profile.phone}}</td>
+                 
+                </tr>
+                {% endfor %}
+          
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+
+
+<!--     <div class="container">-->
+<!--<h2>Bootstrap File upload demo</h2>-->
+<!--    <div class="col-xs-4">-->
+<!--        <div class="form-group">-->
+<!--        <label class="control-label">A file upload button without icon</label>-->
+<!--        <input type="file" class="filestyle" data-icon="false">-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,98 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Voter {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+
+<div class="container mt-5" style="width:40%">
+    <h3 class="text-center">Select list</h3>
+   <form action="dependantfield/hello" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    <label for="state">State</label>
+    <select class="form-select" aria-label="Default select example" id="state">
+        <option selected>Choose State</option>
+        {% for i in state %}
+            <option value="{{i.id}}" {% if request.GET.state == i.id|lower %}selected{% endif %}>{{i.name}}
+</option>
+        {% endfor %}
+    </select>
+
+    <br/>
+    <label for="district">District</label>
+        {% csrf_token %}
+    <select class="form-select" aria-label="Default select example" id="district">
+        <option selected>Choose District</option>
+        {% for i in district %}
+            <option value="{{i.id}}" {% if request.GET.district == i.id|lower %}selected{% endif %}>{{i.name}}
+            </option>
+        {% endfor %}
+    </select>
+<br/>
+    <label for="city">City</label>
+        {% csrf_token %}
+    <select class="form-select" aria-label="Default select example" id="city">
+        <option selected>Choose City</option>
+        {% for i in city %}
+            <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+    </select>
+    <br/>
+</div>
+
+
+<!-- upload file code don't touch this-->
+ {% if messages %}
+        {% for message in messages %}
+            <div>
+<!--                | means OR operator-->
+                <strong>{{message|safe}}</strong>
+            </div>
+        {% endfor %}
+    {% else %}
+    {{order}}
+
+<div class="container mt-5" style="width:40%">
+    {% comment %} <form action="dependantfield/hello" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {% endcomment %}
+        <label for="file1"> </label>
+        <input type="file" id="file1" name="file">
+        
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>email</th>
+                <th>address</th>
+                <th>phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for profile in profiles %}
+                <td>{{profile.name}}</td>
+                <td>{{profile.email}}</td>
+                <td>{{profile.address}}</td>
+                <td>{{profile.phone}}</td>
+             
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+    {% comment %} {% for profile in profiles %}
+    {{profile.name}}
+    {{profile.email}}
+    {% endfor %}  {% endcomment %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
