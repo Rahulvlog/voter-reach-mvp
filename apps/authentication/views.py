@@ -95,22 +95,21 @@ def profile_upload(request):
 
 # created dropdownchained state, city, district
 def dependantfield(request):
-    if request.method == "POST":
-        stateid = request.GET.get('state', None)
-        districtid = request.GET.get('district', None)
-        district = None
-        city = None
-    
-        if stateid:
-            getstate = State.objects.get(id=stateid)
-            district = District.objects.filter(state=getstate)
+    stateid = request.GET.get('state', None)
+    districtid = request.GET.get('district', None)
+    district = None
+    city = None
+    if stateid:
+        print("Hi this is a fighter student")
+        getstate = State.objects.get(id=stateid)
+        district = District.objects.filter(state=getstate).order_by('name')
         
         if districtid:
             getdistrict = District.objects.get(id=districtid)
-            city = City.objects.filter(district=getdistrict)
+            city = City.objects.filter(district=getdistrict).order_by('name')
         
     state= State.objects.all()
-    district= District.objects.all()
-    city= City.objects.all()
+    # district= District.objects.all()
+    # city= City.objects.all()
     return render(request, 'home/upload.html', locals())
     
